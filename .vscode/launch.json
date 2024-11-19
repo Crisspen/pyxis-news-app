@@ -1,0 +1,23 @@
+{
+       "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "pyxis_news",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart"
+        },
+        {
+            "name": "pyxis_news (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "pyxis_news (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
