@@ -1,3 +1,3 @@
-# pyxis_news
+Pyxis News App
 
-A new Flutter project.
+News App developed using Flutter framework, Provider for state management, Hive for persistence & Http for network requests.
