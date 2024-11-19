@@ -26,6 +26,11 @@ class NewsRequest {
         /// Convert the list of JSON articles into a list of Article objects.
         return articlesData
             .map((articleJson) => Article.fromJson(articleJson))
+            .where((article) =>
+                article.urlToImage.isNotEmpty &&
+                article.title.isNotEmpty &&
+                article.source.name.isNotEmpty)
+            .cast<Article>()
             .toList();
       } else {
         /// Throw an exception if the API request failed.
@@ -54,6 +59,11 @@ class NewsRequest {
       /// Convert the list of JSON articles into a list of Article objects.
       return articlesData
           .map((articleJson) => Article.fromJson(articleJson))
+          .where((article) =>
+              article.urlToImage.isNotEmpty &&
+              article.title.isNotEmpty &&
+              article.source.name.isNotEmpty)
+          .cast<Article>()
           .toList();
     } else {
       /// Throw an exception if the API request failed.
@@ -65,8 +75,8 @@ class NewsRequest {
   //Function to fetch news using search query
   Future<List<Article>> searchArticles(String query) async {
     /// Construct the API URL for searching articles.
-    final response = await http.get(Uri.parse(
-        'https://newsapi.org/v2/everything?q=$query&apiKey=$apiKey'));
+    final response = await http.get(
+        Uri.parse('https://newsapi.org/v2/everything?q=$query&apiKey=$apiKey'));
 
     /// Check if the API request was successful.
     if (response.statusCode == 200) {
@@ -79,6 +89,11 @@ class NewsRequest {
       /// Convert the list of JSON articles into a list of Article objects.
       return articlesData
           .map((articleJson) => Article.fromJson(articleJson))
+          .where((article) =>
+              article.urlToImage.isNotEmpty &&
+              article.title.isNotEmpty &&
+              article.source.name.isNotEmpty)
+          .cast<Article>()
           .toList();
     } else {
       /// Throw an exception if the API request failed.

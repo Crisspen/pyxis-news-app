@@ -1,3 +1,5 @@
+//import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:pyxis_news/article.dart';
 import 'package:pyxis_news/article_request.dart';
@@ -35,7 +37,7 @@ class ArticleProvider with ChangeNotifier {
   /// Instance of ArticleHive for local storage of bookmarks.
   final ArticleHive articleHive = ArticleHive();
 
-   /// Bookmarks an article.
+  /// Bookmarks an article.
   Future<void> bookmarkArticle(Article article) async {
     if (bookmarked.contains(article)) {
       // If article is already bookmarked, remove it
@@ -90,10 +92,8 @@ class ArticleProvider with ChangeNotifier {
   /// Searches for articles directly from NewsRequest.
   Future<void> searchArticles(String query) async {
     try {
-      final searchResults = await NewsRequest().searchArticles(query);
-      //topHeadlines = searchResults;
-      ///Updating searchResults list
-      this.searchResults = searchResults;
+      final searchResultsList = await NewsRequest().searchArticles(query);
+      searchResults = searchResultsList;
       if (!recentSearches.contains(query)) {
         recentSearches.add(query);
       }

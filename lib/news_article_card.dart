@@ -68,9 +68,7 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                     )
                   : const Icon(Icons.image_not_supported),
             ),
-            //Add a row with an image of article source and time lapsed since article has been publishedRow(
-    
-                Row(
+             Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
