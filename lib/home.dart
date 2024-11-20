@@ -39,31 +39,18 @@ class _HomePageState extends State<HomePage> {
 
   // Fetch articles based on category and page
   Future<void> _fetchArticles({bool reset = false}) async {
-    if (_isLoadingMore) return; // Prevent multiple concurrent requests
+    if (_isLoadingMore) return;
 
-    setState(() {
-      _isLoadingMore = true;
-      if (reset) _currentPage = 1; // Reset page if fetching for a new category
-    });
+    setState(() => _isLoadingMore = true);
 
     try {
       final articleProvider = Provider.of<ArticleProvider>(context, listen: false);
-      if (reset) {
-        // If resetting (new category), fetch articles for the new category
-        await articleProvider.fetchNewsCategory(_selectedCategory);
-      } else {
-        // Otherwise, fetch more articles for the current category
-        await articleProvider.fetchLatestArticles(page: _currentPage);
-      }
-
-      _currentPage++; // Move to the next page
+      await articleProvider.fetchLatestArticles(page: _currentPage, reset: reset); // Pass reset flag
+      _currentPage++;
     } catch (e) {
       debugPrint('Error fetching articles: $e');
-      // Handle error, e.g., show a snackbar
     } finally {
-      setState(() {
-        _isLoadingMore = false;
-      });
+      setState(() => _isLoadingMore = false);
     }
   }
 
@@ -78,10 +65,11 @@ class _HomePageState extends State<HomePage> {
 
   // Update the selected category and fetch articles
   void _updateSelectedCategory(NewsCategories category) {
+    final articleProvider = Provider.of<ArticleProvider>(context, listen: false);
+    articleProvider.fetchNewsCategory(category); // Call the correct function
     setState(() {
-      _selectedCategory = category;
+      _selectedCategory = category; //Update UI selection only after fetching is done
     });
-    _fetchArticles(reset: true); // Reset page and fetch for the new category
   }
 
   @override

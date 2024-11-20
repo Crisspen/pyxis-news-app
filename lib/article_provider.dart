@@ -65,13 +65,18 @@ class ArticleProvider with ChangeNotifier {
   }
 
   /// Fetches latest articles directly from NewsRequest.
-  Future<void> fetchLatestArticles({required int page}) async {
+  Future<void> fetchLatestArticles({required int page, required bool reset}) async {
     try {
       final headlines = await NewsRequest().fetchLatestArticles(page: page);
-      topHeadlines = headlines;
+      if (reset) {
+        topHeadlines = headlines; // Reset the list if it's a new category or initial load
+      } else {
+        topHeadlines.addAll(headlines); // Append new articles to the existing list
+      }
       notifyListeners();
     } catch (e) {
       debugPrint('Error fetching latest articles: $e');
+      //Consider adding a user-friendly error message here, perhaps a snackbar
       notifyListeners();
     }
   }
