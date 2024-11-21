@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: FilterChip(
-                    label: Text(category.name),
+                    label: Text(category.name.toUpperCase()),
                     onSelected: (selected) {
                       if (selected) {
                         _updateSelectedCategory(category);
