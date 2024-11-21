@@ -4,7 +4,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:pyxis_news/article.dart';
 import 'package:pyxis_news/article_provider.dart';
-//import 'package:pyxis_news/pyxis_news_theme.dart'; // Import the theme file
+import 'package:timeago/timeago.dart' as timeago;
 
 class NewsArticleCard extends StatefulWidget {
   final Article article;
@@ -75,12 +75,13 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                       widget.article.source.name,
                       style: theme.textTheme.bodySmall,
                     ),
-                  ],
-                ),
-                Text(
-                  widget.article.publishedAt.toString(),
+                    Text(
+                  timeago.format(DateTime.parse(widget.article.publishedAt)),// widget.article.publishedAt,
                   style: theme.textTheme.bodySmall,
                 ),
+                  ],
+                ),
+                
               
             
 

@@ -17,6 +17,7 @@ dependencies:
   provider: ^6.1.2
   share_plus: ^10.0.2
   shimmer: ^3.0.0
+  timeago: ^3.7.0
   webview_flutter: ^4.9.0
 
 dev_dependencies:
