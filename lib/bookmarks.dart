@@ -38,14 +38,12 @@ class _BookmarksPageState extends State<BookmarksPage> {
           switch (index) {
             case 0:
               // Navigate to the home page
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/', (route) => false);
+              Navigator.pushReplacementNamed(context, '/');
               break;
 
             case 1:
               // Navigate to the search page
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/search', (route) => false);
+              Navigator.pushNamed(context, '/search');
               break;
 
             case 2:
@@ -58,6 +56,5 @@ class _BookmarksPageState extends State<BookmarksPage> {
         },
       ),
     );
-    
   }
 }

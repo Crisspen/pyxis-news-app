@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:pyxis_news/article.dart';
 import 'package:pyxis_news/article_hive.dart';
 import 'package:pyxis_news/article_provider.dart';
+import 'package:pyxis_news/bookmarks.dart';
 import 'package:pyxis_news/pyxis_news_theme.dart';
 import 'package:pyxis_news/home.dart';
+import 'package:pyxis_news/search.dart';
 //import 'package:hive/hive.dart';
 
 final articleHive = ArticleHive();
@@ -31,7 +33,12 @@ class NewsApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Pyxis News',
       theme: PyxisNewsTheme.lightTheme,
-      home: const HomePage(),
+      //home: const HomePage(),
+      routes: {
+        '/': (context) => const HomePage(),
+        '/search': (context) => const SearchPage(),
+        '/bookmarks': (context) => const BookmarksPage(),
+      },
     );
   }
 }

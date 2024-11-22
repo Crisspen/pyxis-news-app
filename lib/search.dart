@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:pyxis_news/article_provider.dart';
-import 'package:pyxis_news/bookmarks.dart';
+//import 'package:pyxis_news/bookmarks.dart';
 import 'package:pyxis_news/bottom_nav_bar.dart';
 import 'package:pyxis_news/news_article_card.dart';
 
@@ -23,6 +23,10 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search News'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Column(
         children: [
@@ -132,8 +136,7 @@ class _SearchPageState extends State<SearchPage> {
           switch (index) {
             case 0:
               // Navigate to the home page
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/', (route) => false);
+              Navigator.pushReplacementNamed(context, '/');
               break;
 
             case 1:
@@ -141,12 +144,7 @@ class _SearchPageState extends State<SearchPage> {
               break;
             case 2:
               // Navigate to the bookmarks page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BookmarksPage(),
-                ),
-              );
+              Navigator.pushNamed(context, '/bookmarks');
               break;
             default:
               break;

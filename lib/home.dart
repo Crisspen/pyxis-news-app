@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pyxis_news/bookmarks.dart';
-import 'package:pyxis_news/search.dart';
+//import 'package:pyxis_news/bookmarks.dart';
+//import 'package:pyxis_news/search.dart';
 //import 'package:pyxis_news/search.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -44,8 +44,10 @@ class _HomePageState extends State<HomePage> {
     setState(() => _isLoadingMore = true);
 
     try {
-      final articleProvider = Provider.of<ArticleProvider>(context, listen: false);
-      await articleProvider.fetchLatestArticles(page: _currentPage, reset: reset); // Pass reset flag
+      final articleProvider =
+          Provider.of<ArticleProvider>(context, listen: false);
+      await articleProvider.fetchLatestArticles(
+          page: _currentPage, reset: reset); // Pass reset flag
       _currentPage++;
     } catch (e) {
       debugPrint('Error fetching articles: $e');
@@ -65,10 +67,12 @@ class _HomePageState extends State<HomePage> {
 
   // Update the selected category and fetch articles
   void _updateSelectedCategory(NewsCategories category) {
-    final articleProvider = Provider.of<ArticleProvider>(context, listen: false);
+    final articleProvider =
+        Provider.of<ArticleProvider>(context, listen: false);
     articleProvider.fetchNewsCategory(category); // Call the correct function
     setState(() {
-      _selectedCategory = category; //Update UI selection only after fetching is done
+      _selectedCategory =
+          category; //Update UI selection only after fetching is done
     });
   }
 
@@ -113,8 +117,8 @@ class _HomePageState extends State<HomePage> {
                       itemCount: 10, // Show 10 shimmer placeholders
                       itemBuilder: (context, index) {
                         return Container(
-                          margin:
-                              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           height: 120,
                           decoration: BoxDecoration(
                             color: Colors.grey[300]!,
@@ -133,15 +137,14 @@ class _HomePageState extends State<HomePage> {
                         final article = articleProvider.topHeadlines[index];
                         return NewsArticleCard(article: article);
                       } else {
-                        return const Center(
-                            child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
-                      },
-                    ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavBar(
+                    },
+                  ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavBar(
         onTap: (index) {
           // Handle navigation based on the tapped index
           switch (index) {
@@ -150,24 +153,14 @@ class _HomePageState extends State<HomePage> {
               break;
             case 1:
               // Navigate to the search page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SearchPage(),
-                ),
-              );
+              Navigator.pushNamed(context, '/search');
               break;
             case 2:
               // Navigate to the bookmarks page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BookmarksPage(),
-                ),
-              );
+              Navigator.pushNamed(context, '/bookmarks');
               break;
             default:
-              break; 
+              break;
           }
         },
       ),
