@@ -50,12 +50,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Update the selected category and fetch articles
-  void _updateSelectedCategory(NewsCategories category) {
-    setState(() {
-      _selectedCategory = category;
-    });
-    //_fetchArticles(reset: true);
-  }
+ void _updateSelectedCategory(NewsCategories category) {
+   setState(() {
+     _selectedCategory = category;
+   });
+   final articleProvider = Provider.of<ArticleProvider>(context, listen: false);
+   articleProvider.fetchArticles(category: category, page: 1, reset: true); 
+ }
+ 
 
   @override
   Widget build(BuildContext context) {
