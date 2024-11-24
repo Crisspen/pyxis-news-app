@@ -102,11 +102,13 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.article.author,
-                        style: theme.textTheme.bodyMedium, // Use theme's bodyMedium style
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                      Expanded(
+                        child: Text(
+                          widget.article.author,
+                          style: theme.textTheme.bodyMedium, // Use theme's bodyMedium style
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                       ),
                       Text(
                   timeago.format(DateTime.parse(widget.article.publishedAt)),
