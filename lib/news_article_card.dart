@@ -53,6 +53,7 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
@@ -68,17 +69,17 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                     )
                   : const Icon(Icons.image_not_supported),
             ),
+            const SizedBox(height: 8),
              Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.article.source.name,
-                      style: theme.textTheme.bodySmall,
+                    Expanded(
+                      child: Text(
+                        widget.article.source.name,
+                        style: theme.textTheme.bodySmall,
+                      ),
                     ),
-                    Text(
-                  timeago.format(DateTime.parse(widget.article.publishedAt)),// widget.article.publishedAt,
-                  style: theme.textTheme.bodySmall,
-                ),
+                    
                   ],
                 ),
                 
@@ -98,11 +99,20 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                     maxLines: 2,
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    widget.article.author,
-                    style: theme.textTheme.bodyMedium, // Use theme's bodyMedium style
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.article.author,
+                        style: theme.textTheme.bodyMedium, // Use theme's bodyMedium style
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      Text(
+                  timeago.format(DateTime.parse(widget.article.publishedAt)),
+                  style: theme.textTheme.bodySmall,
+                ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   Row(
