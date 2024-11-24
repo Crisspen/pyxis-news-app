@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:pyxis_news/bookmarks.dart';
-//import 'package:pyxis_news/search.dart';
-//import 'package:pyxis_news/search.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:pyxis_news/article_provider.dart';
 import 'package:pyxis_news/bottom_nav_bar.dart';
 import 'package:pyxis_news/news_article_card.dart';
-//import 'package:pyxis_news/search_page.dart';
-//import 'package:pyxis_news/bookmarks_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,14 +16,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
   NewsCategories _selectedCategory = NewsCategories.general;
-  int _currentPage = 1; // Track the current page for pagination
-  bool _isLoadingMore = false; // Flag to prevent concurrent requests
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _fetchArticles(); // Fetch initial articles on startup
+    Future.delayed(Duration.zero, () {
+      // ignore: use_build_context_synchronously
+      final articleProvider =
+          // ignore: use_build_context_synchronously
+          Provider.of<ArticleProvider>(context, listen: false);
+      articleProvider.fetchArticles(
+          category: _selectedCategory, page: 1, reset: true);
+    });
   }
 
   @override
@@ -37,48 +37,31 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  // Fetch articles based on category and page
-  Future<void> _fetchArticles({bool reset = false}) async {
-    if (_isLoadingMore) return;
-
-    setState(() => _isLoadingMore = true);
-
-    try {
-      final articleProvider =
-          Provider.of<ArticleProvider>(context, listen: false);
-      await articleProvider.fetchLatestArticles(
-          page: _currentPage, reset: reset); // Pass reset flag
-      _currentPage++;
-    } catch (e) {
-      debugPrint('Error fetching articles: $e');
-    } finally {
-      setState(() => _isLoadingMore = false);
-    }
-  }
-
   // Load more articles when scrolling to the bottom
   void _onScroll() {
-    if (!_isLoadingMore &&
-        _scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {
-      _fetchArticles();
+    final articleProvider = Provider.of<ArticleProvider>(context,
+        listen: false); //Access Provider here
+    if (!articleProvider.isLoadingMore && //Use the public getter here
+        _scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 200) {
+      articleProvider
+          .loadMoreArticles(); //Call loadMoreArticles directly on the provider
     }
   }
 
   // Update the selected category and fetch articles
   void _updateSelectedCategory(NewsCategories category) {
-    final articleProvider =
-        Provider.of<ArticleProvider>(context, listen: false);
-    articleProvider.fetchNewsCategory(category); // Call the correct function
     setState(() {
-      _selectedCategory =
-          category; //Update UI selection only after fetching is done
+      _selectedCategory = category;
     });
+    //_fetchArticles(reset: true);
   }
 
   @override
   Widget build(BuildContext context) {
     final articleProvider = context.watch<ArticleProvider>();
+    bool isLoadingMore =
+        articleProvider.isLoadingMore; //Access public getter here
 
     return Scaffold(
       appBar: AppBar(
@@ -131,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 : ListView.builder(
                     controller: _scrollController,
                     itemCount: articleProvider.topHeadlines.length +
-                        (_isLoadingMore ? 1 : 0), // Show loading indicator
+                        (isLoadingMore ? 1 : 0), // Show loading indicator
                     itemBuilder: (context, index) {
                       if (index < articleProvider.topHeadlines.length) {
                         final article = articleProvider.topHeadlines[index];
