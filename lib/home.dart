@@ -39,15 +39,13 @@ class _HomePageState extends State<HomePage> {
 
   // Load more articles when scrolling to the bottom
   void _onScroll() {
-    final articleProvider = Provider.of<ArticleProvider>(context,
-        listen: false); //Access Provider here
-    if (!articleProvider.isLoadingMore && //Use the public getter here
-        _scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 200) {
-      articleProvider
-          .loadMoreArticles(); //Call loadMoreArticles directly on the provider
-    }
+  final articleProvider = Provider.of<ArticleProvider>(context, listen: false);
+  if (!articleProvider.isLoadingMore &&
+      _scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+    articleProvider.loadMoreArticles(_selectedCategory); // Pass the current category
   }
+}
 
   // Update the selected category and fetch articles
  void _updateSelectedCategory(NewsCategories category) {
