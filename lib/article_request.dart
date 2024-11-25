@@ -21,17 +21,15 @@ class NewsRequest {
 
       /// Extract the list of articles from the JSON data.
       if (data['status'] == 'ok') {
-        final articlesData = data['articles'] as List<dynamic>;
+        final articlesData = data['articles'] as List; // No <dynamic>
 
-        /// Convert the list of JSON articles into a list of Article objects.
         return articlesData
-            .map((articleJson) => Article.fromJson(articleJson))
+            .map((articleJson) => Article.fromJson(articleJson as Map<String, dynamic>))
             .where((article) =>
                 article.urlToImage.isNotEmpty &&
                 article.title.isNotEmpty &&
                 article.source.name.isNotEmpty)
-            .cast<Article>()
-            .toList();
+            .toList(); // No need for .cast<Article>() anymore
       } else {
         /// Throw an exception if the API request failed.
         throw Exception('Failed to load articles: ${response.statusCode}');
@@ -54,16 +52,13 @@ class NewsRequest {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
       /// Extract the list of articles from the JSON data.
-      final articlesData = data['articles'] as List<dynamic>;
-
-      /// Convert the list of JSON articles into a list of Article objects.
+      final articlesData = data['articles'] as List;
       return articlesData
-          .map((articleJson) => Article.fromJson(articleJson))
+          .map((articleJson) => Article.fromJson(articleJson as Map<String, dynamic>))
           .where((article) =>
               article.urlToImage.isNotEmpty &&
               article.title.isNotEmpty &&
               article.source.name.isNotEmpty)
-          .cast<Article>()
           .toList();
     } else {
       /// Throw an exception if the API request failed.
@@ -84,16 +79,14 @@ class NewsRequest {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
       /// Extract the list of articles from the JSON data.
-      final articlesData = data['articles'] as List<dynamic>;
+      final articlesData = data['articles'] as List;
 
-      /// Convert the list of JSON articles into a list of Article objects.
       return articlesData
-          .map((articleJson) => Article.fromJson(articleJson))
+          .map((articleJson) => Article.fromJson(articleJson as Map<String, dynamic>))
           .where((article) =>
               article.urlToImage.isNotEmpty &&
               article.title.isNotEmpty &&
               article.source.name.isNotEmpty)
-          .cast<Article>()
           .toList();
     } else {
       /// Throw an exception if the API request failed.
