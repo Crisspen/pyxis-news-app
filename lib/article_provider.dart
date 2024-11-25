@@ -92,7 +92,6 @@ class ArticleProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint('Error fetching articles for this category: $e');
-      notifyListeners();
     }
   }
 
@@ -107,7 +106,6 @@ class ArticleProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint('Error fetching articles for this search: $e');
-      notifyListeners();
     }
   }
 
