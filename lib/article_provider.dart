@@ -110,18 +110,16 @@ class ArticleProvider with ChangeNotifier {
   }
 
   Future<void> fetchArticles(
-      {required NewsCategories category,
-      required int page,
-      required bool reset}) async {
+      {required NewsCategories category, required int page, required bool reset}) async {
     _isLoadingMore = true;
+    notifyListeners();
 
     try {
       if (reset) {
-        _currentPage = 1; // Reset page when category changes
-        topHeadlines.clear(); // clear list when reset is true
+        _currentPage = 1;
+        topHeadlines.clear();
       }
-      final articles = await NewsRequest().fetchNewsCategory(
-          category); // Modified to directly fetch by category if it is not general
+
       if (category == NewsCategories.general) {
         final articles = await NewsRequest().fetchLatestArticles(page: page);
         if (reset) {
@@ -130,11 +128,13 @@ class ArticleProvider with ChangeNotifier {
           topHeadlines.addAll(articles);
         }
       } else {
-        topHeadlines = articles;
+        final articles = await NewsRequest().fetchNewsCategory(category);
+        topHeadlines = articles; //Replace the list for specific categories
       }
-      _currentPage++;
+       _currentPage = page; //Keep track of page number for future pagination 
     } catch (e) {
       debugPrint('Error fetching articles: $e');
+      // Add appropriate error handling (e.g., show a snackbar to the user)
     } finally {
       _isLoadingMore = false;
       notifyListeners();
@@ -142,14 +142,24 @@ class ArticleProvider with ChangeNotifier {
   }
 
   //Expose a method to request more articles
-  void loadMoreArticles() {
-    if (!_isLoadingMore) {
-      fetchArticles(
-        category: selectedCategory,
-        page: _currentPage,
-        reset: false,
-      );
-    }
+  Future<void> loadMoreArticles(NewsCategories category) async {
+    if (_isLoadingMore) return; // Prevent concurrent calls
+
+    _isLoadingMore = true;
     notifyListeners();
+
+    try {
+      _currentPage++; // Increment page for next set of results
+      await fetchArticles(
+          category: category,
+          page: _currentPage,
+          reset: false); // Fetch and append
+    } catch (e) {
+      _currentPage--; // Decrement page if there's an error
+      // Handle error
+    } finally {
+      _isLoadingMore = false;
+      notifyListeners();
+    }
   }
 }
