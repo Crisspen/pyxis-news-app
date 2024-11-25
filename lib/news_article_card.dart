@@ -57,7 +57,8 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
               child: widget.article.urlToImage.isNotEmpty
                   ? Image.network(
                       widget.article.urlToImage,
@@ -70,23 +71,17 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                   : const Icon(Icons.image_not_supported),
             ),
             const SizedBox(height: 8),
-             Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.article.source.name,
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                    
-                  ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.article.source.name,
+                    style: theme.textTheme.bodySmall,
+                  ),
                 ),
-                
-              
-            
-
-            
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -94,7 +89,8 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                 children: [
                   Text(
                     widget.article.title,
-                    style: theme.textTheme.headlineSmall, // Use theme's headlineSmall style
+                    style: theme.textTheme
+                        .headlineSmall, // Use theme's headlineSmall style
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
@@ -105,15 +101,17 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                       Expanded(
                         child: Text(
                           widget.article.author,
-                          style: theme.textTheme.bodyMedium, // Use theme's bodyMedium style
+                          style: theme.textTheme
+                              .bodyMedium, // Use theme's bodyMedium style
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                       ),
                       Text(
-                  timeago.format(DateTime.parse(widget.article.publishedAt)),
-                  style: theme.textTheme.bodySmall,
-                ),
+                        timeago
+                            .format(DateTime.parse(widget.article.publishedAt)),
+                        style: theme.textTheme.bodySmall,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -135,7 +133,9 @@ class _NewsArticleCardState extends State<NewsArticleCard> {
                         icon: const Icon(Icons.share),
                       ),
                       Icon(
-                        isRead ? Icons.visibility_outlined : Icons.visibility_rounded,
+                        isRead
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_rounded,
                       ),
                     ],
                   ),
