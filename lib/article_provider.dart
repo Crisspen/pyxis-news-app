@@ -1,5 +1,3 @@
-//import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:pyxis_news/article.dart';
 import 'package:pyxis_news/article_request.dart';
@@ -100,6 +98,7 @@ class ArticleProvider with ChangeNotifier {
     try {
       final searchResultsList = await NewsRequest().searchArticles(query);
       searchResults = searchResultsList;
+      notifyListeners();
       if (!recentSearches.contains(query)) {
         recentSearches.add(query);
       }
