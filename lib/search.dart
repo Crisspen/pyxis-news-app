@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+//import 'package:pyxis_news/article.dart';
 
 import 'package:pyxis_news/article_provider.dart';
 //import 'package:pyxis_news/bookmarks.dart';
@@ -15,17 +16,31 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
+  late ArticleProvider articleProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    articleProvider = Provider.of<ArticleProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    articleProvider.clearSearchResults();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final articleProvider = Provider.of<ArticleProvider>(context);
-
+    articleProvider.clearSearchResults();
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search News'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context), 
         ),
       ),
       body: Column(
@@ -90,17 +105,15 @@ class _SearchPageState extends State<SearchPage> {
             child: Consumer<ArticleProvider>(
               builder: (context, articleProvider, child) {
                 if (articleProvider.searchResults.isNotEmpty) {
-                  // Display search results
                   return ListView.builder(
                     itemCount: articleProvider.searchResults.length,
-                    itemBuilder: (context, index) {
-                      final article = articleProvider.searchResults[index];
-                      return NewsArticleCard(article: article);
-                    },
+                    itemBuilder: (context, index) => NewsArticleCard(
+                        article: articleProvider.searchResults[index]),
                   );
-                } else if (articleProvider.recentSearches.isNotEmpty) {
-                  // Display recent searches when there are no search results
+                } else if (articleProvider.recentSearches.isNotEmpty &&
+                    _searchController.text.isEmpty) {
                   return ListView.builder(
+                    // Display recent searches when searchResults is empty
                     itemCount: articleProvider.recentSearches.length,
                     itemBuilder: (context, index) {
                       final query = articleProvider.recentSearches[index];
@@ -117,13 +130,8 @@ class _SearchPageState extends State<SearchPage> {
                     },
                   );
                 } else {
-                  // Display "No search results" when there are no results or recent searches
                   return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text('No search results'),
-                    ),
-                  );
+                      child: Text('No search results')); // Default message
                 }
               },
             ),

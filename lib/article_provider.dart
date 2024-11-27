@@ -19,9 +19,11 @@ enum NewsCategories {
 class ArticleProvider with ChangeNotifier {
   int _currentPage = 1;
   bool _isLoadingMore = false;
+  final bool _isSearching = false;
 
   int get currentPage => _currentPage;
   bool get isLoadingMore => _isLoadingMore;
+  bool get isSearching => _isSearching;
 
   /// List of latest news articles.
   List<Article> topHeadlines = [];
@@ -76,7 +78,6 @@ class ArticleProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint('Error fetching latest articles: $e');
-      //Consider adding a user-friendly error message here, perhaps a snackbar
       notifyListeners();
     }
   }
@@ -98,7 +99,7 @@ class ArticleProvider with ChangeNotifier {
     try {
       final searchResultsList = await NewsRequest().searchArticles(query);
       searchResults = searchResultsList;
-      notifyListeners();
+
       if (!recentSearches.contains(query)) {
         recentSearches.add(query);
       }
@@ -107,11 +108,15 @@ class ArticleProvider with ChangeNotifier {
       debugPrint('Error fetching articles for this search: $e');
     }
   }
+//Clear list of search results
+void clearSearchResults() {
+    searchResults.clear();
+    //notifyListeners();
+  } 
 
   Future<void> fetchArticles(
       {required NewsCategories category, required int page, required bool reset}) async {
     _isLoadingMore = true;
-    notifyListeners();
 
     try {
       if (reset) {
@@ -136,16 +141,15 @@ class ArticleProvider with ChangeNotifier {
       // Add appropriate error handling (e.g., show a snackbar to the user)
     } finally {
       _isLoadingMore = false;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   //Expose a method to request more articles
   Future<void> loadMoreArticles(NewsCategories category) async {
-    if (_isLoadingMore) return; // Prevent concurrent calls
+    if (isLoadingMore) return; // Prevent concurrent calls
 
     _isLoadingMore = true;
-    notifyListeners();
 
     try {
       _currentPage++; // Increment page for next set of results
@@ -158,7 +162,8 @@ class ArticleProvider with ChangeNotifier {
       // Handle error
     } finally {
       _isLoadingMore = false;
-      notifyListeners();
     }
+      notifyListeners();
   }
+
 }
