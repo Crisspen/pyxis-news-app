@@ -37,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search News'),
+        title: const Text('Search'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context), 
