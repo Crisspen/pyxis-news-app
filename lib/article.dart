@@ -9,7 +9,7 @@ part 'article.g.dart';
 class Article extends HiveObject {
   /// The author of the article.
   @HiveField(0)
-  final String author;
+  final String? author;
 
   /// The title of the article.
   @HiveField(1)
@@ -17,7 +17,7 @@ class Article extends HiveObject {
 
   /// A brief description of the article.
   @HiveField(2)
-  final String description;
+  final String? description;
 
   /// The URL of the full article.
   @HiveField(3)
@@ -33,7 +33,7 @@ class Article extends HiveObject {
 
   /// The source of the article.
   @HiveField(6)
-  final Source source;
+  final Source? source;
 
   /// Constructor for the Article class.
   Article({
