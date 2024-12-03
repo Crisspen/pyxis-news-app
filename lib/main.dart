@@ -13,9 +13,12 @@ import 'package:pyxis_news/search.dart';
 
 final articleHive = ArticleHive();
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); //Ensure initialization
   await Hive.initFlutter();
   Hive.registerAdapter(ArticleAdapter());
-  await articleHive.openHiveBox();
+  Hive.registerAdapter(SourceAdapter()); // Register Source adapter
+  await Hive.openBox<Article>(ArticleHive.boxName); // Open the box *before* the app starts.
+  //await Hive.deleteBoxFromDisk('bookmarked');
   runApp(
     ChangeNotifierProvider(
       create: (context) => ArticleProvider(),

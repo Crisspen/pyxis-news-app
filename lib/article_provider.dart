@@ -44,13 +44,11 @@ class ArticleProvider with ChangeNotifier {
   final ArticleHive articleHive = ArticleHive();
 
   /// Bookmarks an article.
-  Future<void> bookmarkArticle(Article article) async {
+    Future<void> bookmarkArticle(Article article) async {
     if (bookmarked.contains(article)) {
-      // If article is already bookmarked, remove it
       bookmarked.remove(article);
-      await articleHive.removeArticle(article);
+      await articleHive.removeArticle(article.url); // Use article.url as key
     } else {
-      // If article is not bookmarked, add it
       bookmarked.add(article);
       await articleHive.saveArticle(article);
     }
@@ -165,5 +163,10 @@ void clearSearchResults() {
     }
       notifyListeners();
   }
+
+    List<Article> getAllBookmarkedArticles() {
+      return articleHive.getBookmarkedArticles();
+    }
+  
 
 }

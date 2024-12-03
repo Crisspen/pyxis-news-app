@@ -28,7 +28,7 @@ class NewsRequest {
             .where((article) =>
                 article.urlToImage.isNotEmpty &&
                 article.title.isNotEmpty &&
-                article.source.name.isNotEmpty)
+                article.source!.name.isNotEmpty)
             .toList(); // No need for .cast<Article>() anymore
       } else {
         /// Throw an exception if the API request failed.
@@ -58,7 +58,7 @@ class NewsRequest {
           .where((article) =>
               article.urlToImage.isNotEmpty &&
               article.title.isNotEmpty &&
-              article.source.name.isNotEmpty)
+              article.source!.name.isNotEmpty)
           .toList();
     } else {
       /// Throw an exception if the API request failed.
@@ -86,7 +86,7 @@ class NewsRequest {
           .where((article) =>
               article.urlToImage.isNotEmpty &&
               article.title.isNotEmpty &&
-              article.source.name.isNotEmpty)
+              article.source!.name.isNotEmpty)
           .toList();
     } else {
       /// Throw an exception if the API request failed.

@@ -12,22 +12,24 @@ class BookmarksPage extends StatefulWidget {
 }
 
 class _BookmarksPageState extends State<BookmarksPage> {
+
   @override
   Widget build(BuildContext context) {
     final articleProvider = Provider.of<ArticleProvider>(context);
+    final bookmarkedArticles = articleProvider.getAllBookmarkedArticles();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved'),
+        title: const Text('Bookmarked'),
       ),
-      body: articleProvider.bookmarked.isEmpty
+      body: bookmarkedArticles.isEmpty
           ? const Center(
               child: Text('No saved articles yet.'),
             )
           : ListView.builder(
-              itemCount: articleProvider.bookmarked.length,
+              itemCount: bookmarkedArticles.length,
               itemBuilder: (context, index) {
-                final article = articleProvider.bookmarked[index];
+                final article = bookmarkedArticles[index];
                 return NewsArticleCard(article: article);
               },
             ),
